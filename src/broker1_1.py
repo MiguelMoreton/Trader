@@ -7,27 +7,56 @@ print("🚀 BACKTEST 20 NASDAQ - 1000 días - 500€ cada una")
 
 # 20 NASDAQ TOP
 tickers = [
-    # Top 25 NASDAQ 100 (Market Cap líderes 2026)
-    'AAPL', 'MSFT', 'NVDA', 'GOOGL', 'AMZN', 'META', 'TSLA', 'AVGO', 'COST', 'NFLX',
-    'ASML', 'AMD', 'CRM', 'ORCL', 'ADBE', 'TXN', 'AMAT', 'QCOM', 'INTC', 'NOW',
-    'WMT', 'AMGN', 'KLAC', 'PANW', 'GILD',
+    # 🔬 Semiconductores
+    'NVDA',  # NVIDIA
+    'AMD',   # Advanced Micro Devices
+    'MU',    # Micron
+    'LRCX',  # Lam Research
+    'KLAC',  # KLA Corp
+    'AMAT',  # Applied Materials
+    'ON',    # ON Semiconductor
+    'MRVL',  # Marvell
     
-    # 26-50: Tech/Semis/Cloud
-    'MU', 'SNPS', 'CDNS', 'MRVL', 'CSX', 'NXPI', 'PCAR', 'ROP', 'REGN', 'VRTX',
-    'ADSK', 'CCEP', 'MCHP', 'DDOG', 'KDP', 'TRI', 'TTWO', 'WDAY', 'CTAS', 'MRNA',
+    # 🚗 High Growth / Especulativas
+    'TSLA',  # Tesla
+    'CVNA',  # Carvana
+    'RIVN',  # Rivian
+    'LCID',  # Lucid
+    'COIN',  # Coinbase
+    'PLTR',  # Palantir
+    'UPST',  # Upstart
     
-    # 51-75: Software/Health/Consumo
-    'CSGP', 'FANG', 'MNST', 'ODFL', 'DXCM', 'TTD', 'CPRT', 'IDXX', 'XEL', 'FAST',
-    'MELI', 'ZS', 'ANSS', 'TEAM', 'DLTR', 'SBUX', 'CTSH', 'EXC', 'BKR', 'MDLZ',
+    # ☁️ SaaS Volátil
+    'DDOG',  # Datadog
+    'SNOW',  # Snowflake
+    'NET',   # Cloudflare
+    'CRWD',  # CrowdStrike
+    'ZS',    # Zscaler
+    'OKTA',  # Okta
+    'TTD',   # Trade Desk
     
-    # 76-100: Diversos (Energy/Telecom/Industrial)
-    'ADP', 'DASH', 'CMCSA', 'ILMN', 'GFS', 'WBD', 'ON', 'HON', 'VRSK', 'KHC'
+    # ⚡ Energía / Cíclicas
+    'FANG',  # Diamondback Energy
+    'OXY',   # Occidental Petroleum
+    'DVN',   # Devon Energy
+    'HAL',   # Halliburton
+    'SLB',   # Schlumberger
+    'VST',   # Vistra
+    
+    # 🏗️ Industriales cíclicos
+    'CAT',   # Caterpillar
+    'DE',    # Deere
+    'URI',   # United Rentals
+    
+    # 🏦 Financieras sensibles ciclo
+    'GS',    # Goldman Sachs
+    'MS',    # Morgan Stanley
+    'COF'    # Capital One
 ]
-
-end = datetime.now() - timedelta(days=730) 
-start = end - timedelta(days=1100)  
-capital_inicial_total = 10000.0
-capital_por_empresa = 500.0  # 500€ x 20 = 10K
+end = datetime.now()
+start = end - timedelta(days=365)  
+capital_inicial_total = 17000.0
+capital_por_empresa = 500  # 500€ x 20 = 10K
 
 # Descargar todos datos
 print("📥 Descargando 20 tickers...")
@@ -37,7 +66,7 @@ df['Date'] = pd.to_datetime(df['Date']).dt.date
 df = df.sort_values(['Ticker','Date']).reset_index(drop=True)
 
 # Escalera % por día
-sell_thresholds = [5, 4, 3, 3, 2, 1, 0]
+sell_thresholds = [1, 1, 1, 1, 1, 1, 0]
 
 # Backtest por empresa
 resultados = {}
@@ -59,7 +88,7 @@ for ticker in tickers:
         today_ret = tdf['Return'].iloc[i]
         
         # COMPRA: -3% sin posición
-        if today_ret <= -3 and position == 0:
+        if today_ret <= -10 and position == 0:
             position = 1
             buy_price = tdf['Close'].iloc[i]
             buy_day = i
@@ -101,11 +130,13 @@ df_resultados['Rendimiento'] = (df_resultados['Capital_Final']/500 - 1)*100
 df_resultados = df_resultados.sort_values('Rendimiento', ascending=False)
 
 capital_final_total = df_resultados['Capital_Final'].sum()
-print(f"\n💰 INICIAL TOTAL: €10.000")
+print(f"\n💰 INICIAL TOTAL: €{capital_inicial_total:,.0f}")
 print(f"💵 FINAL TOTAL: €{capital_final_total:,.0f}")
-print(f"📈 RENDIMIENTO CARTERA: {(capital_final_total/10000-1)*100:+.1f}%")
+print(f"📈 RENDIMIENTO CARTERA: {(capital_final_total/capital_inicial_total-1)*100:+.1f}%")
 print(f"🏆 TOP 5:")
 print(df_resultados.head().round(0))
+print(f"🏆 bottom 5:")
+print(df_resultados.tail().round(0))
 
 # GUARDAR
 df_resultados.to_csv('NASDAQ20_backtest_resultados.csv', index=False)
@@ -117,6 +148,6 @@ print("- NASDAQ20_backtest_resultados.csv")
 print("- NASDAQ20_todas_operaciones.csv") 
 print("- NASDAQ20_datos_1000dias.csv")
 
-años = 1100 / 365
-cagr = (capital_final_total / 10000)**(1/años) - 1
-print(f"CAGR real: {cagr*100:.2f}% anual")
+"""años = 1100 / 365
+cagr = (capital_final_total / 50000)**(1/años) - 1
+print(f"CAGR real: {cagr*100:.2f}% anual")"""
