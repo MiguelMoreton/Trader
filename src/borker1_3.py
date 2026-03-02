@@ -27,7 +27,7 @@ sell_thresholds = [5,4,3,3,2,1,0]
 # ==============================
 
 end = datetime.now()
-start = end - timedelta(days=3000)
+start = end - timedelta(days=300)
 
 print("📥 Descargando datos...")
 data = yf.download(tickers, start=start, end=end, progress=False)['Close']
