@@ -12,15 +12,11 @@ def main():
     # PARAMETROS
     # ==============================
     tickers =   ['NVDA','AMD','MU','LRCX','KLAC','AMAT','ON','MRVL',
-    'TSLA','CVNA','RIVN','LCID','COIN','PLTR','UPST',
-    'DDOG','SNOW','NET','CRWD','ZS','OKTA','TTD',
-    'FANG','OXY','DVN','HAL','SLB','VST',
-    'CAT','DE','URI',
-    'GS','MS','COF']
-    duration = 300
+    'TSLA']
+    duration = 100
     capital = 250000
     buy_drop = -2
-    alloc_pct = 0.1
+    alloc_pct = 0.2
     sell_thresholds=[5,4,3,3,2,1,0]
     min_trade = 100
 

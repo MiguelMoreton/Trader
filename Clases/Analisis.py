@@ -33,7 +33,10 @@ class Analisis:
         - Retorno_Medio_%
         - Numero_Operaciones (ventas)
         - Rentabilidad_% = Beneficio_Total / Capital_Total_Invertido
+
+        Añade una fila final TOTAL.
         """
+
         if self.df_ops.empty:
             return pd.DataFrame()
 
@@ -48,17 +51,40 @@ class Analisis:
             Numero_Operaciones=("Ticker", "count")
         )
 
-        # Evita división por 0
         resumen["Rentabilidad_%"] = np.where(
             resumen["Capital_Total_Invertido"] > 0,
             (resumen["Beneficio_Total"] / resumen["Capital_Total_Invertido"]) * 100.0,
             np.nan
         )
 
-        # Ajuste nombre de columna (estética)
         resumen.rename(columns={"Retorno_Medio_": "Retorno_Medio_%"}, inplace=True)
 
-        return resumen.sort_values("Beneficio_Total", ascending=False)
+        # =========================
+        # 🔥 FILA TOTAL
+        # =========================
+        total_capital = resumen["Capital_Total_Invertido"].sum()
+        total_beneficio = resumen["Beneficio_Total"].sum()
+        total_operaciones = resumen["Numero_Operaciones"].sum()
+
+        total_rentabilidad = (
+            (total_beneficio / total_capital) * 100.0
+            if total_capital > 0 else np.nan
+        )
+
+        total_row = pd.DataFrame({
+            "Capital_Total_Invertido": [total_capital],
+            "Beneficio_Total": [total_beneficio],
+            "Retorno_Medio_%": [ventas["Retorno_%"].mean()],
+            "Numero_Operaciones": [total_operaciones],
+            "Rentabilidad_%": [total_rentabilidad]
+        }, index=["TOTAL"])
+
+        resumen = resumen.sort_values("Beneficio_Total", ascending=False)
+
+        # Añadimos la fila final
+        resumen = pd.concat([resumen, total_row])
+
+        return resumen
 
     # ============================================================
     # 2) Rentabilidad total, CAGR y duración
