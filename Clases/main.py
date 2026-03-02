@@ -2,6 +2,7 @@ import pandas as pd
 from data_loader import DataLoader
 from Strategy import Strategy
 from Backtester import Backtester
+from Analisis import Analisis
 
 
 
@@ -39,12 +40,12 @@ def main():
     # BACKTEST
     # ==============================
     backtester = Backtester(strategy)
-    equity_df = backtester.run(df)
+    df_equity, df_ops = backtester.run(df)
 
     # ==============================
     # RESULTADOS
     # ==============================
-    capital_final = equity_df["Equity"].iloc[-1]
+    capital_final = df_equity["Equity"].iloc[-1]
     rent_total = (capital_final / capital - 1) * 100
 
     print("\n============================")
@@ -52,8 +53,48 @@ def main():
     print("📈 RENTABILIDAD:", round(rent_total, 2), "%")
     print("============================")
 
-    equity_df.to_csv("Clases/Resultados/equity.csv", index=False)
+    # ==============================
+    # RESULTADOS DE ANALISIS
+    # ==============================
+    analisis = Analisis(df_ops=df_ops,df_equity=df_equity, capital_inicial= capital)
+    
+    #Resumen por accciones
+    res_acciones = analisis.resultado_por_accion()
+    print("\n📊 RESUMEN POR ACCION:")
+    print(res_acciones)
+
+    resumen = analisis.resumen_rentabilidad()
+    print("\n📊 RESUMEN DE RENTABILIDAD: \n")
+    print(resumen)
+
+
+#---------------------------------
+    #CREACION DE HEATMAP
+    buy_thresholds = [-2, -3, -4, -5, -6, -7, -8, -9, -10]
+    alloc_pcts = [0.02, 0.05, 0.10, 0.15, 0.20]
+
+    heatmap_data = backtester.generate_heatmap_data(
+        df=df,
+        buy_thresholds=buy_thresholds,
+        alloc_pcts=alloc_pcts,
+        capital_inicial=capital,
+        sell_thresholds=sell_thresholds,
+        min_trade=min_trade,
+        verbose=True
+    )
+
+    ruta = analisis.plot_heatmap(heatmap_data, save_dir="Clases/Resultados",
+    filename="heatmap_rentabilidad.png",
+    show=False,  # pon True si quieres probar a mostrarlo
+    decimals=2)
+    print(f"\n📁 Heatmap guardado en: {ruta}")
+
+#-------------------------------
+
+    df_equity.to_csv("Clases/Resultados/equity.csv", index=False)
+    df_ops.to_csv("Clases/Resultados/operaciones.csv", index=False)
     print("📁 equity.csv generado")
+    print("📁 operaciones.csv generado")
 
 
 if __name__ == "__main__":
