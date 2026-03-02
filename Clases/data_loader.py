@@ -14,7 +14,7 @@ class DataLoader:
         Devuelve DataFrame con columnas:
         Date, Ticker, Close, Return
         """
-        end = datetime.now()
+        end = datetime.now() - timedelta(days=1)
         start = end - timedelta(days=duration_days)
 
         print("📥 Descargando datos...")
