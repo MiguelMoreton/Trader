@@ -17,12 +17,7 @@ def main():
     'FANG','OXY','DVN','HAL','SLB','VST',
     'CAT','DE','URI',
     'GS','MS','COF']
-<<<<<<< HEAD
-    duration = 5
-=======
-    duration = 3000
-
->>>>>>> 6cb62da (ultima actualizacion)
+    duration = 5        
     capital = 250000
     buy_drop = -3
     alloc_pct = 0.1
