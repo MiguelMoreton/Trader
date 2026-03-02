@@ -45,17 +45,11 @@ class Backtester:
 
         df_equity = pd.DataFrame(self.equity_diaria, columns=["Fecha", "Equity"])
 
-        df_ops = pd.DataFrame(
-            self.strategy.operaciones,
-            columns=[
-                'Fecha','Ticker','Tipo','Precio',
-                'Capital_Invertido',
-                'Capital_Recuperado',
-                'Beneficio',
-                'Retorno_%',
-                'Dias'
-            ]
-        )
+        df_ops = pd.DataFrame(self.strategy.operaciones, columns=[
+            "Fecha","Ticker","Tipo","Precio",
+            "Capital_Invertido","Capital_Recuperado","Beneficio","Retorno_%","Dias",
+            "operaciones_abiertas","Total_Invertido_global","Total_disponible"
+        ])
 
         return df_equity, df_ops
     
