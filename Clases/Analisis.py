@@ -106,7 +106,7 @@ class Analisis:
     # 3) Heatmap como el de la foto
     # ============================================================
     
-    def plot_heatmap(
+    """def plot_heatmap(
         self,
         heat_df: pd.DataFrame,
         title: str = "Heatmap de rentabilidad total (%)",
@@ -119,9 +119,6 @@ class Analisis:
         show: bool = False,     # 👈 pon True si quieres intentar mostrar
         dpi: int = 200
     ) -> str:
-        """
-        Devuelve la ruta del archivo guardado.
-        """
 
         if heat_df is None or heat_df.empty:
             raise ValueError("heat_df está vacío. Pásame un DataFrame con la matriz del heatmap.")
@@ -165,4 +162,4 @@ class Analisis:
         # ✅ Cerrar para evitar consumo de memoria en bucles
         plt.close(fig)
 
-        return save_path
+        return save_path"""

@@ -17,9 +17,9 @@ def main():
     'FANG','OXY','DVN','HAL','SLB','VST',
     'CAT','DE','URI',
     'GS','MS','COF']
-    duration = 5        
+    duration = 300
     capital = 250000
-    buy_drop = -3
+    buy_drop = -2
     alloc_pct = 0.1
     sell_thresholds=[5,4,3,3,2,1,0]
     min_trade = 100
@@ -69,7 +69,7 @@ def main():
 
 #---------------------------------
     #CREACION DE HEATMAP
-    buy_thresholds = [-2, -3, -4, -5, -6, -7, -8, -9, -10]
+    """buy_thresholds = [-2, -3, -4, -5, -6, -7, -8, -9, -10]
     alloc_pcts = [0.02, 0.05, 0.10, 0.15, 0.20]
 
     heatmap_data = backtester.generate_heatmap_data(
@@ -86,7 +86,7 @@ def main():
     filename="heatmap_rentabilidad.png",
     show=False,  # pon True si quieres probar a mostrarlo
     decimals=2)
-    print(f"\n📁 Heatmap guardado en: {ruta}")
+    print(f"\n📁 Heatmap guardado en: {ruta}")"""
 
 #-------------------------------
 
