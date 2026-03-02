@@ -8,7 +8,53 @@ print("🚀 BACKTEST CARTERA DINÁMICA - 50% por señal")
 # ==============================
 # CONFIG
 # ==============================
-tickers = ['^VIX']  # Volatility Index (VIX)
+tickers = [
+    # 🔬 Semiconductores
+    'NVDA',  # NVIDIA
+    'AMD',   # Advanced Micro Devices
+    'MU',    # Micron
+    'LRCX',  # Lam Research
+    'KLAC',  # KLA Corp
+    'AMAT',  # Applied Materials
+    'ON',    # ON Semiconductor
+    'MRVL',  # Marvell
+    
+    # 🚗 High Growth / Especulativas
+    'TSLA',  # Tesla
+    'CVNA',  # Carvana
+    'RIVN',  # Rivian
+    'LCID',  # Lucid
+    'COIN',  # Coinbase
+    'PLTR',  # Palantir
+    'UPST',  # Upstart
+    
+    # ☁️ SaaS Volátil
+    'DDOG',  # Datadog
+    'SNOW',  # Snowflake
+    'NET',   # Cloudflare
+    'CRWD',  # CrowdStrike
+    'ZS',    # Zscaler
+    'OKTA',  # Okta
+    'TTD',   # Trade Desk
+    
+    # ⚡ Energía / Cíclicas
+    'FANG',  # Diamondback Energy
+    'OXY',   # Occidental Petroleum
+    'DVN',   # Devon Energy
+    'HAL',   # Halliburton
+    'SLB',   # Schlumberger
+    'VST',   # Vistra
+    
+    # 🏗️ Industriales cíclicos
+    'CAT',   # Caterpillar
+    'DE',    # Deere
+    'URI',   # United Rentals
+    
+    # 🏦 Financieras sensibles ciclo
+    'GS',    # Goldman Sachs
+    'MS',    # Morgan Stanley
+    'COF'    # Capital One
+]
 capital_total = 250000.0
 capital_disponible = capital_total
 sell_thresholds = [5, 4, 3, 3, 2, 1, 0]
@@ -17,7 +63,7 @@ sell_thresholds = [5, 4, 3, 3, 2, 1, 0]
 # DATOS
 # ==============================
 end = datetime.now()
-start = end - timedelta(days=1000)
+start = end - timedelta(days=3000)
 
 print("📥 Descargando datos...")
 data = yf.download(tickers, start=start, end=end, progress=False)['Close']
@@ -81,7 +127,7 @@ for fecha in sorted(df['Date'].unique()):
             continue
         
         # Señal de compra
-        if ret <= -2 and ticker not in posiciones and capital_disponible > 0:
+        if ret <= -3 and ticker not in posiciones and capital_disponible > 0:
             
             capital_invertir = capital_disponible * 0.5
             
